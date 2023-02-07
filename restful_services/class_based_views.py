@@ -1,5 +1,9 @@
-from flask import request, jsonify
-from flask_restx import Resource
+from flask import Flask, request
+from flask_restx import Api, Resource
+
+app = Flask(__name__)
+api = Api(app)
+book_ns = api.namespace('')
 
 books = {
     1: {
@@ -15,9 +19,10 @@ books = {
 }
 
 
+@book_ns.route('/books')
 class BooksView(Resource):
     def get(self):
-        return jsonify(books), 200
+        return books, 200
 
     def post(self):
         req_json = request.json
@@ -25,6 +30,7 @@ class BooksView(Resource):
         return "", 200
 
 
+@book_ns.route('/books/<int:bid>')
 class BookView(Resource):
     def get(self, bid):
         return books[bid], 200
@@ -32,3 +38,7 @@ class BookView(Resource):
     def delete(self, bid):
         del books[bid]
         return "", 204
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
