@@ -1,19 +1,6 @@
 from marshmallow import Schema, fields
 
-from .database import db
-
-
-class Book(db.Model):
-    __tablename__ = 'book'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    year = db.Column(db.Integer)
-
-
-class BookSchema(Schema):
-    id = fields.Int()
-    name = fields.Str()
-    year = fields.Int()
+from ...database import db
 
 
 class Author(db.Model):
@@ -27,4 +14,3 @@ class AuthorSchema(Schema):
     id = fields.Int()
     first_name = fields.Str()
     last_name = fields.Str()
-
